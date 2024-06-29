@@ -1,0 +1,26 @@
+.contact {
+  margin-top: 25px;
+  display: flex;
+  padding: 7px 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.contactWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  gap: 10px;
+}
+.wrapper {
+  display: flex;
+  gap: 10px;
+}
+.contactButton {
+  width: 28%;
+  margin: auto;
+  height: 30px;
+}
+.item {
+  font-size: medium;
+  font-weight: 600;
+}
