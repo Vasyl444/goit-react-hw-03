@@ -1,4 +1,3 @@
-//import { Formik } from "formik";
 import css from "./App.module.css";
 import contacts from "../../../contacts.json";
 import ContactForm from "../ContactForm/ContactForm.jsx";
@@ -11,7 +10,6 @@ export default function App() {
   const hundleChange = (event) => {
     const searchValue = event.target.value;
     setSearch(searchValue);
-    console.log(search);
   };
   const storageValues = () => {
     if (JSON.parse(localStorage.getItem("formValues")) === null) {
@@ -32,13 +30,20 @@ export default function App() {
     ]);
     actions.resetForm();
   };
-  //localStorage.clear();
-  function handleDelete(itemId) {
+  const handleDelete = (itemId) => {
     setFormValue((formValue) => {
       return formValue.filter((item) => item.id !== itemId);
     });
-  }
-
+  };
+  const visibleContacts = () => {
+    if (search === "") {
+      return formValue;
+    } else {
+      return formValue.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+  };
   useEffect(() => {
     window.localStorage.setItem("formValues", JSON.stringify(formValue));
   }, [formValue]);
@@ -46,8 +51,8 @@ export default function App() {
     <div>
       <h1 className={css.title}>Phonebook</h1>
       <ContactForm onSubmit={addContact} />
-      <SearchBox contacts={formValue} hundleChange={hundleChange} />
-      <ContactList contacts={formValue} handleDelete={handleDelete} />
+      <SearchBox hundleChange={hundleChange} />
+      <ContactList contacts={visibleContacts()} handleDelete={handleDelete} />
     </div>
   );
 }
