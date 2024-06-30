@@ -18,9 +18,5 @@
 .contactButton {
   width: 28%;
   margin: auto;
-  height: 30px;
-}
-.item {
-  font-size: medium;
-  font-weight: 600;
+  padding: 5px 0;
 }

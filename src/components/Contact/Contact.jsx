@@ -2,7 +2,10 @@ import css from "./Contact.module.css";
 import { IoPersonSharp } from "react-icons/io5";
 import { IoCall } from "react-icons/io5";
 
-export default function Contact({ contact: { name, number } }) {
+export default function Contact({
+  contact: { name, number, id },
+  handleDelete,
+}) {
   return (
     <div className={css.contact}>
       <div className={css.contactWrapper}>
@@ -15,8 +18,12 @@ export default function Contact({ contact: { name, number } }) {
           <p className={css.item}>{number}</p>
         </div>
       </div>
-      <button type="button" className={css.contactButton}>
-        DELETE
+      <button
+        type="button"
+        onClick={() => handleDelete(id)}
+        className={css.contactButton}
+      >
+        Delete
       </button>
     </div>
   );

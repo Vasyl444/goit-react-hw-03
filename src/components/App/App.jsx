@@ -3,39 +3,51 @@ import css from "./App.module.css";
 import contacts from "../../../contacts.json";
 import ContactForm from "../ContactForm/ContactForm.jsx";
 import ContactList from "../ContactList/ContactList.jsx";
-import { useState } from "react";
-import { Formik } from "formik";
+import SearchBox from "../SearchBox/SearchBox.jsx";
+import { useState, useEffect } from "react";
+
 export default function App() {
-  //let newContact = contacts;
-  const [formVal, setFormVal] = useState(contacts);
-  console.log({ formVal });
-  const formValues = { name: "", number: "" };
+  const [search, setSearch] = useState("");
+  const hundleChange = (event) => {
+    const searchValue = event.target.value;
+    setSearch(searchValue);
+    console.log(search);
+  };
+  const storageValues = () => {
+    if (JSON.parse(localStorage.getItem("formValues")) === null) {
+      return contacts;
+    } else {
+      return JSON.parse(localStorage.getItem("formValues"));
+    }
+  };
+  const [formValue, setFormValue] = useState(storageValues);
   const addContact = (values, actions) => {
-    setFormVal((formVal) => {
-      return [
-        ...formVal,
-        {
-          id: JSON.stringify(new Date().getTime()),
-          name: values.name.trim(),
-          number: values.number.trim(),
-        },
-      ];
-    });
-    console.log(values);
-    console.log("newContact : ", formVal);
+    setFormValue([
+      ...formValue,
+      {
+        id: JSON.stringify(new Date().getTime()),
+        name: values.name.trim(),
+        number: values.number.trim(),
+      },
+    ]);
     actions.resetForm();
   };
+  //localStorage.clear();
+  function handleDelete(itemId) {
+    setFormValue((formValue) => {
+      return formValue.filter((item) => item.id !== itemId);
+    });
+  }
+
+  useEffect(() => {
+    window.localStorage.setItem("formValues", JSON.stringify(formValue));
+  }, [formValue]);
   return (
-    <Formik
-      initialValues={formValues}
-      onSubmit={addContact}
-      validate={() => {}}
-    >
-      <div>
-        <h1 className={css.title}>Phonebook</h1>
-        <ContactForm />
-        <ContactList contacts={formVal} />.
-      </div>
-    </Formik>
+    <div>
+      <h1 className={css.title}>Phonebook</h1>
+      <ContactForm onSubmit={addContact} />
+      <SearchBox contacts={formValue} hundleChange={hundleChange} />
+      <ContactList contacts={formValue} handleDelete={handleDelete} />
+    </div>
   );
 }

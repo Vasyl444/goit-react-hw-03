@@ -1,18 +1,26 @@
-import { Form, Field } from "formik";
+import { Formik, Form, Field } from "formik";
 import { useId } from "react";
-//import contacts from "../../../contacts.json";
+import css from "./ContactForm.module.css";
 
-export default function ContactForm() {
+export default function ContactForm({ onSubmit }) {
   const nameId = useId();
   const numberId = useId();
-  //const formValues = { name: "", number: "" };
+  const formValues = { name: "", number: "" };
   return (
-    <Form>
-      <label htmlFor={nameId}>Name</label>
-      <Field type="text" name="name" id={nameId}></Field>
-      <label htmlFor={numberId}>Number</label>
-      <Field type="tel" name="number" id={numberId}></Field>
-      <button type="submit">Add Contact</button>
-    </Form>
+    <Formik initialValues={formValues} onSubmit={onSubmit} validate={() => {}}>
+      <Form className={css.form}>
+        <div className={css.fieldDiv}>
+          <label htmlFor={nameId}>Name</label>
+          <Field type="text" name="name" id={nameId}></Field>
+        </div>
+        <div className={css.fieldDiv}>
+          <label htmlFor={numberId}>Number</label>
+          <Field type="tel" name="number" id={numberId}></Field>
+        </div>
+        <button type="submit" className={css.formButton}>
+          Add contact
+        </button>
+      </Form>
+    </Formik>
   );
 }
